@@ -1,9 +1,9 @@
-package com.markdemo.rest;
+package com.markdemo.service;
 
 import org.springframework.stereotype.Service;
 
 @Service
-class WelcomeService {
+public class WelcomeService {
     public String retrieveWelcomeMessage() {
         return "This is great! I see something on screen!";
     }
