@@ -1,4 +1,4 @@
-package com.markdemo.rest;
+package com.markdemo.controller;
 
 import com.markdemo.service.WelcomeService;
 import org.springframework.beans.factory.annotation.Autowired;
