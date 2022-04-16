@@ -3,10 +3,11 @@ package com.markdemo.controller;
 import com.markdemo.model.Question;
 import com.markdemo.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,19 @@ public class SurveyController {
     List<Question> retrieveQuestionsForService(@PathVariable String surveyId) {
         return surveyService.retrieveSurvey(surveyId).getQuestions();
     }
+
+    @PostMapping("/surveys/{surveyId}/questions")
+    ResponseEntity<Void> createQuestionForService(@PathVariable String surveyId,
+    @RequestBody Question newQuestion) {
+       Question question =  surveyService.addQuestion(surveyId, newQuestion);
+
+       if (question == null) {
+           return ResponseEntity.badRequest().build();
+       }
+        URI createdLocation = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(question.getId()).toUri();
+        return ResponseEntity.created(createdLocation).build();
+    }
+
 
     @GetMapping("/surveys/{surveyId}/question/{questionId}")
     Question retrieveQuestionForSurvey(@PathVariable String surveyId,
